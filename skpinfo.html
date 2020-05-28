@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #406e7e;
+        }
+
+        #programmørboks, #infrastrukturboks, #supportboks {
+            padding-left: 5%;
+        }
+
+        #programmørboks {
+            background-color: #fbae5f;
+            border-top: 3px solid black;
+            border-left: 3px solid black;
+            border-right: 3px solid black;
+            border-radius: 10px 10px;
+        }
+
+        #infrastrukturboks {
+            background-color: #a7cde3;
+            border-left: 3px solid black;
+            border-right: 3px solid black;
+            border-radius: 10px 10px;
+        }
+
+        #supportboks {
+            background-color: #eade56;
+            border-left: 3px solid black;
+            border-right: 3px solid black;
+            border-bottom: 3px solid black;
+            border-radius: 10px 10px;
+        }
+
+        span {
+            margin: 0%;
+            font-size: 125%;
+            padding-bottom: 1%;
+        }
+
+        .col {
+            text-align: center;
+            margin-bottom: 1%;
+        }
+
+        h3 {
+            padding-top: 1%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid" id="deltprojektboks">
+        <div class="container-fluid" id="programmørboks">
+            <h3 id="education_1"></h3>      
+            <div class="row">
+                <div class="col">
+                    <span>Elever</span> <span id="students_1"></span>
+                </div>
+                <div class="col">
+                    <span>Projekter</span> <span id="projects_1"></span>
+                </div>
+                <div class="col">
+                    <span>Deadlines</span> <span id="deadlines_1"></span>
+                </div>
+            </div>            
+        </div>
+        <div class="container-fluid" id="infrastrukturboks">
+            <h3 id="education_2"></h3>
+            <div class="row">
+                <div class="col">
+                    <span>Elever</span> <span id="students_2"></span>
+                </div>
+                <div class="col">
+                    <span>Projekter</span> <span id="projects_2"></span>
+                </div>
+                <div class="col">
+                    <span>Deadlines</span> <span id="deadlines_2"></span>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid" id="supportboks">
+            <h3 id="education_3"></h3>
+            <div class="row">
+                <div class="col">
+                    <span>Elever</span> <span id="students_3"></span>
+                </div>
+                <div class="col">
+                    <span>Projekter</span> <span id="projects_3"></span>
+                </div>
+                <div class="col">
+                    <span>Deadlines</span> <span id="deadlines_3"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        (function students_cout() {
+            $.ajax({
+                type: "POST",
+                data: {
+                    what: 'skp-json',
+                },
+                url: "https://itd-skp.sde.dk/infoscreen/data/find.php",
+                success: function (searchResult) {
+                    searchResult.result.forEach(function (result, index) {
+                        let i = index + 1;
+                        $("#education_" + i).text(result.education);
+                        $("#students_" + i).text(result.students);
+                        $("#projects_" + i).text(result.projects);
+                        $("#deadlines_" + i).text(result.deadlines);
+                        (result.students != result.projects)
+                            ? $("#projects_" + i).css("color", "red")
+                            : $("#projects_" + i).css("color", "green");
+                    });
+                }
+            })
+            setInterval(students_cout, 3600000); // 60 minutes in milisec.
+        })();
+    </script>
+</body>
+</html>
